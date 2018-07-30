@@ -14,5 +14,5 @@ Retrofit
 Picasso
 ```
 
-![Alt text](https://raw.github.com/nandoligeiro/movione/master/movieone.png)
+![Alt text](https://github.com/nandoligeiro/movieOne/blob/master/movione.png)
 
