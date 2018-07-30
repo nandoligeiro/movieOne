@@ -11,6 +11,7 @@ RecyclerView
 Intent
 AsyncTask
 Retrofit
+Picasso
 ```
 
 
