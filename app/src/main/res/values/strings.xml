@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MovieOne</string>
+    <string name="error">Ops! Algo deu errado.</string>
+
+    <string name="text_most_popular">Mais popular</string>
+    <string name="text_top_rated">Mais votado</string>
+
+</resources>
+
+
