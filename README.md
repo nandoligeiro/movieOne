@@ -11,6 +11,8 @@ RecyclerView
 Intent
 AsyncTask
 Retrofit
+Picasso
 ```
 
+![Alt text](https://raw.github.com/nandoligeiro/movione/master/movieone.png)
 
