@@ -8,6 +8,4 @@ public final class Constants {
     public static String SIZE_W1280 = "w1280";
     public static String SIZE_W342 = "w342";
 
-    public static String API_KEY = "";
-
 }

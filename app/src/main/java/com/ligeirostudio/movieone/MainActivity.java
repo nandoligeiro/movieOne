@@ -1,7 +1,6 @@
 package com.ligeirostudio.movieone;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,12 +16,10 @@ import com.ligeirostudio.movieone.model.Result;
 import com.ligeirostudio.movieone.model.TheMovie;
 import com.ligeirostudio.movieone.retrofit.RequesterApi;
 
-import java.io.IOException;
-
-import retrofit2.Call;
 
 
-public class MainActivity extends AppCompatActivity implements MovieOneAdapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements MovieOneAdapter.ListItemClickListener,
+        FetchDataMovieTask.OnTaskCompleted {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -42,12 +39,12 @@ public class MainActivity extends AppCompatActivity implements MovieOneAdapter.L
 
     private void loadMostPopularMovies() {
         showLoading();
-        new FetchDataMovie().execute(new RequesterApi().getApi().getMostPopular());
+        new FetchDataMovieTask(this).execute(new RequesterApi().getApi().getMostPopular());
     }
 
     private void loadTopRatedMovies() {
         showLoading();
-        new FetchDataMovie().execute(new RequesterApi().getApi().getTopRated());
+        new FetchDataMovieTask(this).execute(new RequesterApi().getApi().getTopRated());
     }
 
     private void setupAdapter() {
@@ -66,46 +63,16 @@ public class MainActivity extends AppCompatActivity implements MovieOneAdapter.L
         startActivity(intent);
     }
 
-    public class FetchDataMovie extends AsyncTask<Call, Void, TheMovie> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showLoading();
-        }
-
-        @Override
-        protected TheMovie doInBackground(Call... calls) {
-
-            if (calls.length == 0) {
-                return null;
-            }
-            try {
-                Call<TheMovie> objectCall = calls[0];
-                return objectCall.execute().body();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(TheMovie movie) {
-            super.onPostExecute(movie);
-
-            if (movie != null) {
-                showMovieDataView();
-                movieOneAdapter.setMovieData(movie);
-            } else {
-                showErrorMessage();
-            }
-
-
+    @Override
+    public void onTaskCompleted(TheMovie movie) {
+        if (movie != null) {
+            showMovieDataView();
+            movieOneAdapter.setMovieData(movie);
+        } else {
+            showErrorMessage();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

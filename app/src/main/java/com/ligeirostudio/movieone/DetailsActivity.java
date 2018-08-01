@@ -36,7 +36,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (getIntent() != null) {
             if (getIntent().hasExtra("result")) {
-                Result movieResult = (Result) getIntent().getSerializableExtra("result");
+                Result movieResult = getIntent().getParcelableExtra("result");
                 Picasso.get()
                         .load(Constants.POSTER_URL + Constants.SIZE_W1280 + movieResult.getBackdropPath())
                         .placeholder(R.drawable.ic_launcher_background)

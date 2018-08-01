@@ -3,6 +3,7 @@ package com.ligeirostudio.movieone.retrofit;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ligeirostudio.movieone.BuildConfig;
 import com.ligeirostudio.movieone.Constants;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class RequesterApi {
                         HttpUrl originalHttpUrl = original.url();
 
                         HttpUrl url = originalHttpUrl.newBuilder()
-                                .addQueryParameter("api_key", Constants.API_KEY)
+                                .addQueryParameter("api_key", BuildConfig.API_KEY)
                                 .build();
 
                         Request.Builder requestBuilder = original.newBuilder()
