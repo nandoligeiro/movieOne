@@ -1,10 +1,9 @@
-package com.ligeirostudio.movieone.model;
+package com.ligeirostudio.movieone.model.movie;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +61,11 @@ public class TheMovie implements Parcelable {
         this.page = (Integer) in.readValue(Integer.class.getClassLoader());
         this.totalResults = (Integer) in.readValue(Integer.class.getClassLoader());
         this.totalPages = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.results = new ArrayList<Result>();
+        this.results = new ArrayList<>();
         in.readList(this.results, Result.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<TheMovie> CREATOR = new Parcelable.Creator<TheMovie>() {
+    public static final Creator<TheMovie> CREATOR = new Creator<TheMovie>() {
         @Override
         public TheMovie createFromParcel(Parcel source) {
             return new TheMovie(source);

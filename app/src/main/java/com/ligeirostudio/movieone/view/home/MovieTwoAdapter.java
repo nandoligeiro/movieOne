@@ -1,4 +1,4 @@
-package com.ligeirostudio.movieone;
+package com.ligeirostudio.movieone.view.home;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,29 +7,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ligeirostudio.movieone.model.Result;
-import com.ligeirostudio.movieone.model.TheMovie;
+import com.ligeirostudio.movieone.Constants;
+import com.ligeirostudio.movieone.R;
+import com.ligeirostudio.movieone.model.movie.Result;
+import com.ligeirostudio.movieone.model.movie.TheMovie;
 import com.squareup.picasso.Picasso;
 
 
-class MovieOneAdapter extends RecyclerView.Adapter<MovieOneAdapter.MovieOneViewHolder> {
+
+class MovieTwoAdapter extends RecyclerView.Adapter<MovieTwoAdapter.MovieOneViewHolder> {
 
     final private ListItemClickListener onClickListener;
     private TheMovie movie;
 
-    MovieOneAdapter(ListItemClickListener onClickListener) {
+    public MovieTwoAdapter(ListItemClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
-    public MovieOneAdapter.MovieOneViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MovieTwoAdapter.MovieOneViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_poster, parent, false);
         return new MovieOneViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieOneAdapter.MovieOneViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieTwoAdapter.MovieOneViewHolder holder, int position) {
         holder.bind(movie.getResults().get(position).getPosterPath());
     }
 

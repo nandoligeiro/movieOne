@@ -3,11 +3,14 @@ package com.ligeirostudio.movieone.retrofit;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.github.leonardoxh.livedatacalladapter.LiveDataCallAdapterFactory;
+import com.github.leonardoxh.livedatacalladapter.LiveDataResponseBodyConverterFactory;
 import com.ligeirostudio.movieone.BuildConfig;
 import com.ligeirostudio.movieone.Constants;
 
 import java.io.IOException;
 import java.util.Date;
+
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -65,9 +68,11 @@ public class RequesterApi {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Constants.BASE_URL)
                 .client(okClient)
+                .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
+                .addConverterFactory(LiveDataResponseBodyConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         api = retrofit.create(ApiService.class);

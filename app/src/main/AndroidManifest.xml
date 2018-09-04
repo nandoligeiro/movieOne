@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ligeirostudio.movieone">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_play"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_play"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.ligeirostudio.movieone.MainActivity">
+        <activity android:name=".view.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.ligeirostudio.movieone.DetailsActivity"
-           >
+        <activity android:name=".view.moviedetail.DetailsActivity"
+            android:parentActivityName=".view.home.MainActivity"
+            tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ligeirostudio.movieone.MainActivity" />
+                android:value=".view.home.MainActivity" />
         </activity>
     </application>
+
 
 </manifest>
