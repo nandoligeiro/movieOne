@@ -13,8 +13,6 @@ import com.ligeirostudio.movieone.model.review.Review;
 import com.ligeirostudio.movieone.model.video.Video;
 import com.ligeirostudio.movieone.retrofit.RequesterApi;
 
-import java.util.List;
-
 
 public class DetailsViewModel extends ViewModel {
 
@@ -34,9 +32,6 @@ public class DetailsViewModel extends ViewModel {
 
     }
 
-    public LiveData<List<FavoriteMoveEntity>> getListFavorites() {
-        return db.favoriteDAO().loadFavorites();
-    }
 
     public LiveData<Resource<Video>> getVideo() {
         return video;
@@ -46,11 +41,11 @@ public class DetailsViewModel extends ViewModel {
         return review;
     }
 
-    public LiveData<FavoriteMoveEntity> getFavoriteById(){
+    public LiveData<FavoriteMoveEntity> getFavoriteById() {
         return db.favoriteDAO().getByFavoriteId(result.getId());
     }
 
-    public void saveFavorite(final FavoriteMoveEntity favorite){
+    public void saveFavorite(final FavoriteMoveEntity favorite) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -61,7 +56,7 @@ public class DetailsViewModel extends ViewModel {
         });
     }
 
-    public void deleteFavorite(){
+    public void deleteFavorite() {
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override

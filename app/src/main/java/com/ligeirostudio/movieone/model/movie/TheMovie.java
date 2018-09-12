@@ -18,7 +18,7 @@ public class TheMovie implements Parcelable {
     @SerializedName("total_pages")
     private Integer totalPages;
     @SerializedName("results")
-    private List<Result> results = null;
+    private List<Result> results = new ArrayList<>();
 
 
     public Integer getPage() {
