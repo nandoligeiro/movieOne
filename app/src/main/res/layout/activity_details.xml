@@ -15,8 +15,10 @@
         <ImageView
             android:id="@+id/img_poster"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"/>
+            android:layout_height="200dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -30,19 +32,7 @@
             android:padding="16dp"
             android:textSize="22sp"/>
 
-        <TextView
-            android:id="@+id/tv_title_trailer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:layout_gravity="left"
-            android:typeface="monospace"
-            android:textStyle="bold"
-            android:text="@string/text_trailer"
-            android:visibility="gone"
-            android:layout_marginLeft="8dp"
-            android:padding="8dp"
-            android:textSize="14sp"/>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -106,6 +96,19 @@
             android:padding="16dp"
             android:textSize="14sp"/>
 
+        <TextView
+            android:id="@+id/tv_title_trailer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_gravity="left"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:text="@string/text_trailer"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:textSize="20sp"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_video"
             android:layout_width="match_parent"
@@ -129,6 +132,19 @@
             android:layout_gravity="bottom"
             android:visibility="invisible"
             />
+
+        <TextView
+            android:id="@+id/tv_title_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_gravity="left"
+            android:typeface="monospace"
+            android:textStyle="bold"
+            android:text="@string/text_reviews"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:textSize="20sp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_review"

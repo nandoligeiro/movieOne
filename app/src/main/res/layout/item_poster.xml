@@ -6,9 +6,9 @@
 
     <ImageView
         android:id="@+id/iv_poster"
-        android:layout_margin="4dp"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_margin="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars"/>
 

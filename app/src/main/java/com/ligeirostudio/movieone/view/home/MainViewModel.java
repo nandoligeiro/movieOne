@@ -46,4 +46,10 @@ public class MainViewModel extends AndroidViewModel {
     public LiveData<Resource<TheMovie>> getTopRated() {
         return topRated;
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+
+    }
 }

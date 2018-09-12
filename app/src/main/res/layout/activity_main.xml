@@ -1,107 +1,37 @@
 <layout>
 
-    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ic_launcher_background"
-        tools:context="nandoligeiro.com.movietwo.view.home.MainActivity">
+        android:descendantFocusability="blocksDescendants">
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants">
+            android:background="@color/black_33"
+            tools:itemCount="20" />
+        <TextView
+            android:id="@+id/tv_error_message_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:padding="16dp"
+            android:text="@string/error"
+            android:textColor="@color/orange"
+            android:textSize="22sp"
+            android:visibility="invisible" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black_33"
-                tools:itemCount="20" />
+        <ProgressBar
+            android:id="@+id/pb_loading_poster"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
 
+    </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_favorites"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/recycler_view"
-                android:background="@color/black"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:background="@color/orange"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tv_my_favorites"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:padding="22dp"
-                    android:text="@string/text_favorites"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    tools:text="Incredibles 2" />
-
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_favorites"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/black"
-
-                    />
-                <View
-                    android:id="@+id/line2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:background="@color/orange"
-
-                    />
-
-            </LinearLayout>
-
-
-
-
-            <TextView
-                android:id="@+id/tv_error_message_display"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:padding="16dp"
-                android:text="@string/error"
-                android:textSize="22sp"
-                android:visibility="invisible" />
-
-            <!--<ProgressBar-->
-                <!--android:id="@+id/pb_loading_poster"-->
-                <!--android:layout_width="42dp"-->
-                <!--android:layout_height="42dp"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:visibility="invisible" />-->
-
-            <ProgressBar
-                android:id="@+id/pb_loading_poster"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true" />
-
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
 </layout>

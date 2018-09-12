@@ -7,6 +7,8 @@ import android.arch.lifecycle.ViewModel;
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.ligeirostudio.movieone.database.AppDatabase;
 import com.ligeirostudio.movieone.database.FavoriteMoveEntity;
+import com.ligeirostudio.movieone.executor.AppExecutors;
+import com.ligeirostudio.movieone.model.movie.Result;
 import com.ligeirostudio.movieone.model.review.Review;
 import com.ligeirostudio.movieone.model.video.Video;
 import com.ligeirostudio.movieone.retrofit.RequesterApi;
@@ -16,22 +18,24 @@ import java.util.List;
 
 public class DetailsViewModel extends ViewModel {
 
+    private Result result;
+    private AppDatabase db;
 
-    LiveData<List<FavoriteMoveEntity>> listFavorites;
-    LiveData<Resource<Video>> video;
-    LiveData<Resource<Review>> review;
+    private LiveData<Resource<Video>> video;
+    private LiveData<Resource<Review>> review;
 
 
+    public DetailsViewModel(AppDatabase db, Result result) {
 
-    public DetailsViewModel(AppDatabase db, int favoriteId) {
+        this.result = result;
+        this.db = db;
+        video = new RequesterApi().getApi().getVideo(result.getId());
+        review = new RequesterApi().getApi().getReview(result.getId());
 
-        listFavorites = db.favoriteDAO().loadFavorites();
-        video = new RequesterApi().getApi().getVideo(favoriteId);
-        review = new RequesterApi().getApi().getReview(favoriteId);
     }
 
     public LiveData<List<FavoriteMoveEntity>> getListFavorites() {
-        return listFavorites;
+        return db.favoriteDAO().loadFavorites();
     }
 
     public LiveData<Resource<Video>> getVideo() {
@@ -40,5 +44,30 @@ public class DetailsViewModel extends ViewModel {
 
     public LiveData<Resource<Review>> getReview() {
         return review;
+    }
+
+    public LiveData<FavoriteMoveEntity> getFavoriteById(){
+        return db.favoriteDAO().getByFavoriteId(result.getId());
+    }
+
+    public void saveFavorite(final FavoriteMoveEntity favorite){
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                db.favoriteDAO().insertFavorite(favorite);
+
+            }
+        });
+    }
+
+    public void deleteFavorite(){
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                db.favoriteDAO().deleteByFavoriteId(result.getId());
+            }
+        });
     }
 }

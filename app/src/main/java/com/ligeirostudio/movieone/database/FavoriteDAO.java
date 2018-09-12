@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface FavoriteDAO {
 
@@ -14,9 +16,9 @@ public interface FavoriteDAO {
     LiveData<List<FavoriteMoveEntity>> loadFavorites();
 
     @Query("SELECT * FROM favorites WHERE favoriteId = :id")
-    FavoriteMoveEntity getByFavoriteId(int id);
+    LiveData<FavoriteMoveEntity> getByFavoriteId(int id);
 
-    @Insert
+    @Insert (onConflict = REPLACE)
     void insertFavorite(FavoriteMoveEntity favoriteMoveEntity);
 
     @Query("DELETE FROM favorites WHERE favoriteId = :id")

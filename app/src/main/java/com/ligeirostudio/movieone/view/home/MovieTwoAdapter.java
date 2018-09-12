@@ -13,12 +13,13 @@ import com.ligeirostudio.movieone.model.movie.Result;
 import com.ligeirostudio.movieone.model.movie.TheMovie;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
 
 
 class MovieTwoAdapter extends RecyclerView.Adapter<MovieTwoAdapter.MovieOneViewHolder> {
 
     final private ListItemClickListener onClickListener;
-    private TheMovie movie;
+    private List<Result> results;
 
     public MovieTwoAdapter(ListItemClickListener onClickListener) {
         this.onClickListener = onClickListener;
@@ -33,16 +34,16 @@ class MovieTwoAdapter extends RecyclerView.Adapter<MovieTwoAdapter.MovieOneViewH
 
     @Override
     public void onBindViewHolder(@NonNull MovieTwoAdapter.MovieOneViewHolder holder, int position) {
-        holder.bind(movie.getResults().get(position).getPosterPath());
+        holder.bind(results.get(position).getPosterPath());
     }
 
     @Override
     public int getItemCount() {
-        return movie != null ? movie.getResults().size() : 0;
+        return results != null && results.size() > 0 ? results.size() : 0;
     }
 
-    public void setMovieData(TheMovie movieData) {
-        movie = movieData;
+    public void setMovieData(List<Result> results) {
+        this.results = results;
         notifyDataSetChanged();
     }
 
@@ -59,7 +60,7 @@ class MovieTwoAdapter extends RecyclerView.Adapter<MovieTwoAdapter.MovieOneViewH
 
         @Override
         public void onClick(View v) {
-            onClickListener.onListItemClick(movie.getResults().get(getAdapterPosition()));
+            onClickListener.onListItemClick(results.get(getAdapterPosition()));
 
         }
 

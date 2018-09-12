@@ -42,6 +42,8 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
     private Result movieResult;
     private AppDatabase db;
 
+    private DetailsViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,19 +51,17 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
         db = AppDatabase.getInstance(this);
         bindViews();
         setupViewModel();
-        checkIsFavorite();
+        setupTrailerAdapter();
+        setupReviewAdapter();
 
-        binding.cbFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.cbFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked) {
+            public void onClick(View v) {
+                if (binding.cbFavorite.isChecked()){
                     saveMovieToFavorite();
-                } else {
+                }else {
                     deleteMovieToFavorite();
                 }
-
-                binding.cbFavorite.setChecked(isChecked);
 
             }
         });
@@ -70,16 +70,23 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
 
     private void setupViewModel() {
 
-        DetailsViewModelFactory factory = new DetailsViewModelFactory(db, movieResult.getId());
+        final DetailsViewModelFactory factory = new DetailsViewModelFactory(db, movieResult);
 
-        DetailsViewModel viewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel.class);
+        viewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel.class);
 
         viewModel.getVideo().observe(this, new Observer<Resource<Video>>() {
             @Override
             public void onChanged(@Nullable Resource<Video> videoResource) {
-                setupTrailerAdapter();
-                if (videoResource != null) {
-                    loaderCompleted(videoResource.getResource());
+
+                if (videoResource.getResource() != null) {
+                    if (videoResource.getResource().getResults().size() > 0){
+                        loaderCompleted(videoResource.getResource());
+                    }else {
+                        hideLineLoading();
+                    }
+
+                }else {
+                    hideLineLoading();
                 }
             }
         });
@@ -87,9 +94,24 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
         viewModel.getReview().observe(this, new Observer<Resource<Review>>() {
             @Override
             public void onChanged(@Nullable Resource<Review> reviewResource) {
-                setupReviewAdapter();
-                if (reviewResource != null) {
-                    loaderCompleted(reviewResource.getResource());
+
+                if (reviewResource.getResource() != null) {
+                    if (reviewResource.getResource().getResults().size() > 0){
+                        loaderCompleted(reviewResource.getResource());
+                    }
+
+                }
+            }
+        });
+
+
+        viewModel.getFavoriteById().observe(this, new Observer<FavoriteMoveEntity>() {
+            @Override
+            public void onChanged(@Nullable FavoriteMoveEntity favoriteMoveEntity) {
+                if (favoriteMoveEntity != null) {
+                    if ((favoriteMoveEntity.getFavoriteId() == movieResult.getId())) {
+                        binding.cbFavorite.setChecked(true);
+                    }
                 }
             }
         });
@@ -105,7 +127,7 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
                 setTitle(movieResult.getTitle());
 
                 Picasso.get()
-                        .load(Constants.POSTER_URL + Constants.SIZE_W1280 + movieResult.getBackdropPath())
+                        .load(Constants.POSTER_URL + Constants.SIZE_W1280 + movieResult.getPosterPath())
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(binding.imgPoster);
                 binding.tvRate.setText(String.valueOf(movieResult.getVoteAverage()));
@@ -135,7 +157,15 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
     @Override
     public void onTrailerClick(VideoResult result) {
         if (!result.getKey().isEmpty()) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_URL + result.getKey())));
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_APP + result.getKey()));
+
+            if (intent.resolveActivity(getPackageManager()) == null) {
+                intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(Constants.YOUTUBE_URL + result.getKey()));
+            }
+
+            startActivity(intent);
         }
     }
 
@@ -152,26 +182,14 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
             hideLineLoading();
             Video result = (Video) data;
             trailerAdapter.setData(result.getResults());
+            binding.tvTitleTrailer.setVisibility(View.VISIBLE);
         } else if (data instanceof Review) {
             Review review = (Review) data;
             reviewAdapter.setData(review.getResults());
+            binding.tvTitleReview.setVisibility(View.VISIBLE);
         }
     }
 
-    private void checkIsFavorite() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-
-                if (db.favoriteDAO().getByFavoriteId(movieResult.getId()) != null) {
-                    if ((db.favoriteDAO().getByFavoriteId(movieResult.getId()).getFavoriteId() == movieResult.getId())) {
-                        binding.cbFavorite.setChecked(true);
-                    }
-                }
-            }
-        });
-
-    }
 
     private void saveMovieToFavorite() {
         final FavoriteMoveEntity favorite = new FavoriteMoveEntity(
@@ -183,27 +201,13 @@ public class DetailsActivity extends AppCompatActivity implements TrailerAdapter
                 movieResult.getReleaseDate(),
                 movieResult.getOverview(),
                 true);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (db.favoriteDAO().getByFavoriteId(movieResult.getId()) == null) {
-                    db.favoriteDAO().insertFavorite(favorite);
 
-                }
-            }
-        });
+        viewModel.saveFavorite(favorite);
 
     }
 
     private void deleteMovieToFavorite() {
-
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                db.favoriteDAO().deleteByFavoriteId(movieResult.getId());
-            }
-        });
-
+        viewModel.deleteFavorite();
     }
 
 

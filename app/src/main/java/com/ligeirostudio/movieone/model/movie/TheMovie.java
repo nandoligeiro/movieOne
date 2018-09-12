@@ -40,6 +40,21 @@ public class TheMovie implements Parcelable {
         return results;
     }
 
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public void setTotalResults(Integer totalResults) {
+        this.totalResults = totalResults;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
 
     @Override
     public int describeContents() {
