@@ -12,7 +12,8 @@
         android:roundIcon="@drawable/ic_play"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.home.MainActivity">
+        <activity android:name=".view.home.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
