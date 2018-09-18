@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
     private final String SCROLL_POSITION_KEY = "scroll_position";
     private static Bundle bundleState;
 
+    private boolean isFavoriteMenuItem = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         setupAdapter();
-        //setMostPopularMovie();
 
         viewModel.getMovies().observe(this, new Observer<TheMovie>() {
             @Override
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
                 setTitle(s);
             }
         });
+
 
 
     }
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
             showMovieDataView();
             movieTwoAdapter.setMovieData(results);
         } else {
+            movieTwoAdapter.setMovieData(null);
             showErrorMessage();
         }
     }
@@ -158,13 +160,16 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
         switch (item.getItemId()) {
             case R.id.action_popular:
                 viewModel.setTitle(getString(R.string.text_most_popular));
+                removeFavoriteObserver();
                 viewModel.setMovieCall(new RequesterApi().getApi().getMostPopular());
                 break;
             case R.id.action_top_rated:
                 viewModel.setTitle(getString(R.string.text_top_rated));
+                removeFavoriteObserver();
                 viewModel.setMovieCall(new RequesterApi().getApi().getTopRated());
                 break;
             case R.id.action_my_favorite:
+                isFavoriteMenuItem = true;
                 viewModel.setTitle(getString(R.string.text_favorites));
                 observeFavorites();
                 break;
@@ -175,12 +180,18 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
 
 
     private void observeFavorites(){
-        viewModel.getFavoritesMovies().observe(this, new Observer<List<FavoriteMoveEntity>>() {
-            @Override
-            public void onChanged(@Nullable List<FavoriteMoveEntity> favoriteMoveEntities) {
-                viewModel.loadFavorites(favoriteMoveEntities);
-            }
-        });
+            viewModel.getFavoritesMovies().observe(this, new Observer<List<FavoriteMoveEntity>>() {
+                @Override
+                public void onChanged(@Nullable List<FavoriteMoveEntity> favoriteMoveEntities) {
+                    viewModel.loadFavorites(favoriteMoveEntities);
+                }
+            });
+
+    }
+
+    private void removeFavoriteObserver(){
+        viewModel.getFavoritesMovies().removeObservers(this);
+
     }
 
     private void showMovieDataView() {
@@ -191,6 +202,12 @@ public class MainActivity extends AppCompatActivity implements MovieTwoAdapter.L
 
     private void showErrorMessage() {
         hideLoading();
+        if (isFavoriteMenuItem){
+            binding.tvErrorMessageDisplay.setText(R.string.text_no_favorites);
+        }else {
+            binding.tvErrorMessageDisplay.setText(R.string.error);
+        }
+        isFavoriteMenuItem = false;
         binding.tvErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 

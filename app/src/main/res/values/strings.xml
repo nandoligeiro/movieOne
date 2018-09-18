@@ -10,6 +10,8 @@
     <string name="text_trailer">Trailers: </string>
     <string name="text_reviews">Reviews: </string>
 
+    <string name="text_no_favorites">No favorite yet :)</string>
+
 
 </resources>
 

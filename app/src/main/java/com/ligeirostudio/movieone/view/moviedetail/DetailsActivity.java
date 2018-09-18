@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import com.github.leonardoxh.livedatacalladapter.Resource;
 import com.ligeirostudio.movieone.Constants;
@@ -20,7 +19,6 @@ import com.ligeirostudio.movieone.R;
 import com.ligeirostudio.movieone.database.AppDatabase;
 import com.ligeirostudio.movieone.database.FavoriteMoveEntity;
 import com.ligeirostudio.movieone.databinding.ActivityDetailsBinding;
-import com.ligeirostudio.movieone.executor.AppExecutors;
 import com.ligeirostudio.movieone.model.movie.Result;
 import com.ligeirostudio.movieone.model.review.Review;
 import com.ligeirostudio.movieone.model.video.Video;
